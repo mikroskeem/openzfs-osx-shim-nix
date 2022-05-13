@@ -27,10 +27,10 @@
         in
         {
           packages.zfs = if pkgs.stdenv.isDarwin then self.packages.${system}.zfs-mac else pkgs.zfs;
-          packages.zfs-mac = pkgs.callPackage ./pkgs/mac-zfs.nix { };
+          packages.zfs-mac = pkgs.callPackage ./pkgs/mac-zfs.nix { inherit (pkgs.darwin) libtapi; };
         })) // {
       overlay = final: prev: {
-        zfs = if prev.stdenv.isDarwin then prev.callPackage ./pkgs/mac-zfs.nix { } else prev.zfs;
+        zfs = if prev.stdenv.isDarwin then prev.callPackage ./pkgs/mac-zfs.nix { inherit (prev.darwin) libtapi; } else prev.zfs;
       };
     };
 }
